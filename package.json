@@ -1,5 +1,5 @@
 {
-  "name": "blockstack",
+  "name": "blockstack-blog",
   "version": "1.0.0",
   "description": "Blockstack Application",
   "main": "index.js",
