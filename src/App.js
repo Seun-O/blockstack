@@ -1,46 +1,25 @@
-import React, { Component } from 'react';
-import Profile from './Profile.js';
-import Signin from './Signin.js';
-import {
-  UserSession,
-  AppConfig
-} from 'blockstack';
+import React, { useGlobal } from "reactn";
+import { Route } from "react-router-dom";
 
-const appConfig = new AppConfig()
-const userSession = new UserSession({ appConfig: appConfig })
+import Login from "./components/Login";
+import AddFriend from "./components/AddFriend";
+import FriendsList from "./components/FriendsList";
 
-export default class App extends Component {
+const App = () => {
+  const [userSession] = useGlobal("userSession");
+  return (
+    <div>
+      <Route path="/" component={Login} />
+      {userSession.isUserSignedIn() ? (
+        <>
+          <AddFriend />
+          <FriendsList />
+        </>
+      ) : (
+        <h1>hello?</h1>
+      )}
+    </div>
+  );
+};
 
-
-  handleSignIn(e) {
-    e.preventDefault();
-    userSession.redirectToSignIn();
-  }
-
-  handleSignOut(e) {
-    e.preventDefault();
-    userSession.signUserOut(window.location.origin);
-  }
-
-  render() {
-    return (
-      <div className="site-wrapper">
-        <div className="site-wrapper-inner">
-          { !userSession.isUserSignedIn() ?
-            <Signin userSession={userSession} handleSignIn={ this.handleSignIn } />
-            : <Profile userSession={userSession} handleSignOut={ this.handleSignOut } />
-          }
-        </div>
-      </div>
-    );
-  }
-
-  componentDidMount() {
-    if (userSession.isSignInPending()) {
-      userSession.handlePendingSignIn().then((userData) => {
-        window.history.replaceState({}, document.title, "/")
-        this.setState({ userData: userData})
-      });
-    }
-  }
-}
+export default App;
