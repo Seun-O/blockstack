@@ -1,6 +1,7 @@
 import React, { useEffect, useGlobal } from "reactn";
+import { withRouter } from "react-router-dom";
 
-const Login = () => {
+const Login = props => {
   const [user, setUser] = useGlobal("user");
   const [userSession, setUserSession] = useGlobal("userSession");
   useEffect(() => {
@@ -8,6 +9,7 @@ const Login = () => {
       userSession.handlePendingSignIn().then(data => {
         window.history.replaceState({}, document.title, "/");
         setUser(data);
+        props.history.push("/dashboard");
       });
     }
   }, [setUser]);
@@ -26,4 +28,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withRouter(Login);

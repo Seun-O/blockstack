@@ -5,8 +5,13 @@ const FriendsList = () => {
   return (
     <div>
       <h1>Hello World</h1>
-      {friends.map(friend => (
-        <p key={friend.id}>{friend.first_name}</p>
+      {friends.map(f => (
+        <React.Fragment key={f.id}>
+          <p>
+            {f.last_name}, {f.first_name}
+          </p>
+          <p>DOB: {f.DOB}</p>
+        </React.Fragment>
       ))}
     </div>
   );
